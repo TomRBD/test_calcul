@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Legends Time Played</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Find out your total time played in League of Legends</h1>
+        <p class="lead">Ever wondered how much of your time has been spent on the fields of justice? Use this tool to find out!</p>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="timePlayedForm" class="mt-4">
+                    <div class="form-group">
+                        <label for="user_name">User Name (with tag, e.g., UserName#EUW):</label>
+                        <input type="text" class="form-control" id="user_name" name="user_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="region">Region:</label>
+                        <select class="form-control" id="region" name="region">
+                            <option value="europe">Europe</option>
+                            <option value="na1">North America</option>
+                            <option value="kr">Korea</option>
+                            <!-- Add other regions as needed -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2 class="mt-4">Total Time Played:</h2>
+                <p id="resultText" class="lead">Your total time played will be displayed here.</p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3>How It Works</h3>
+                <p>This tool calculates the total time you've spent in League of Legends by accessing your match history through the Riot Games API. Just enter your user name and select your region to get started!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#timePlayedForm').on('submit', function(e) {
+                e.preventDefault();  // Prevent the default form submission
+                $('#resultText').text('Calculating...'); // Feedback while waiting for response
+                $.ajax({
+                    type: "POST",
+                    url: "/get_time_played",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        user_name: $('#user_name').val(),
+                        region: $('#region').val()
+                    }),
+                    success: function(response) {
+                        $('#resultText').text(`Total time played: ${response.time_played} seconds`);
+                    },
+                    error: function(error) {
+                        $('#resultText').text('An error occurred, please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

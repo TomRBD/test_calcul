@@ -2,8 +2,10 @@
 import requests
 import time
 from collections import deque
+import os
 
-API_KEY = 'RGAPI-b68d357b-3359-499e-94ea-5f3bd28ccd8c'  # Assurez-vous de le garder secret dans un environnement de production
+#API Key from environment variable
+API_KEY = os.environ.get('API_KEY') # Assurez-vous de le garder secret dans un environnement de production
 
 # Gérer la limite de fréquence des requêtes
 last_requests = deque(maxlen=100)

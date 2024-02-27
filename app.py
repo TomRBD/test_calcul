@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import calcul  # Assurez-vous que cela correspond au nom de votre module Python
 
 app = Flask(__name__)
@@ -8,6 +8,9 @@ def home():
     # Nous servons maintenant votre fichier HTML séparément
     return render_template('index.html')
 
+@app.route('/riot.txt')
+def serve_riot_file():
+    return send_from_directory('static', 'riot.txt')
 
 @app.route('/get_time_played', methods=['POST'])
 def get_time_played():
